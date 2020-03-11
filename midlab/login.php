@@ -4,7 +4,7 @@
 	<title>Login</title>
 </head>
 <body>
-	<form>
+	<form method="post" action="logCheck.php">
 		<fieldset>
 			<legend>LOGIN</legend>
 			User Id<br>

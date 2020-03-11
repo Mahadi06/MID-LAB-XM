@@ -1,6 +1,7 @@
 <?php 
 
 	session_start();
+	$count =0;
 	if(isset($_REQUEST['login']))
 	{
 		$uid = $_REQUEST['uid'];
@@ -14,20 +15,39 @@
 		else
 		{
 			$file = fopen('value.txt', 'r');
-			$user = fread($file, filesize('value.txt'));
-			$data = explode('|', $user);
+			//$user = fread($file, filesize('value.txt'));
+			while(!feof($file))
+			{
+				//$data = fgets($user)
+				$data = explode('|', fgets($file));
 
-			if( trim($data[0]) == $uname && trim($data[1]) == $password){
+				if( trim($data[0]) == $uid && trim($data[1]) == $password)
+				{
 				//$_SESSION['uname'] = $uname;
 				//$_SESSION['pass'] = $password;
-				setcookie('username', $uname, time()+3600, '/');
+					setcookie('username', $uid, time()+3600, '/');
+					if(trim($data[3]) =='admin')
+					{
+						header("location: adminhome.php");
+					}
+					else
+					{
+						header("location: userhome.php");
+						
+					}
 
-				header("location: home.php");
-			}
-			else
-			{
-				echo "invalid uname/password";
-			}
+					
+				}
+				elseif($count==0)
+				{
+					echo "<h3>invalid uid/password</h3>";
+					$count++;
+				}
+		}
+			
+
+
+			
 		}		
 
 	}
